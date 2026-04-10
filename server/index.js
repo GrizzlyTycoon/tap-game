@@ -4,6 +4,61 @@ const app = express();
 
 app.use(express.json());
 
+app.post('/webhook', async (req, res) => {
+  console.log("Webhook hit:", req.body);
+
+  const message = req.body.message;
+
+  if (!message) {
+    return res.sendStatus(200);
+  }
+
+  if (message.text && message.text.startsWith("/start")) {
+    const chatId = message.chat.id;
+
+    // ✅ SAFE REFERRAL LOGIC
+    let referrerId = null;
+
+    try {
+      const parts = message.text.split(" ");
+
+      if (parts.length > 1 && parts[1].startsWith("ref_")) {
+        referrerId = parts[1].replace("ref_", "");
+      }
+    } catch (e) {
+      console.log("Referral parsing error:", e);
+    }
+
+    console.log("Referrer ID:", referrerId);
+
+    try {
+      await axios.post(
+        `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+        {
+          chat_id: chatId,
+          text: "Play now 🎮",
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: "🚀 Play Game",
+                  web_app: {
+                    url: "https://tap-game.vercel.app" // your real URL
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      );
+    } catch (err) {
+      console.error("Telegram error:", err.response?.data || err.message);
+    }
+  }
+
+  res.sendStatus(200);
+});
+
 const BOT_TOKEN = "8279491526:AAGLQO6MkX1eWzIV709uPfxTeBC-ighV4Cc"; //
 
 // ✅ PASTE WEBHOOK HERE
