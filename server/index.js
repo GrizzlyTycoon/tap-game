@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 
-const BOT_TOKEN = "YOUR_BOT_TOKEN";
+const BOT_TOKEN = "8279491526:AAEKDE3w_2ANvlCgfMd16BEqf4WRayAFY2k";
 
 app.get('/send-game', async (req, res) => {
   const chatId = req.query.chatId;
