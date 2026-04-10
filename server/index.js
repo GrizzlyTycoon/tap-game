@@ -2,6 +2,12 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 
+const mongoose = require('mongoose');
+
+mongoose.connect("YOUR_MONGO_URL")
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.log(err));
+
 app.use(express.json());
 
 app.post('/webhook', async (req, res) => {
@@ -43,7 +49,7 @@ app.post('/webhook', async (req, res) => {
                 {
                   text: "🚀 Play Game",
                   web_app: {
-                    url: "https://tap-game.vercel.app" // your real URL
+                    url: "https://tap-game.vercel.app" // 
                   }
                 }
               ]
