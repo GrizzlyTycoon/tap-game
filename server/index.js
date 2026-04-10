@@ -4,17 +4,18 @@ const app = express();
 
 app.use(express.json());
 
-const BOT_TOKEN = "8279491526:AAEKDE3w_2ANvlCgfMd16BEqf4WRayAFY2k";
+const BOT_TOKEN = "8279491526:AAGLQO6MkX1eWzIV709uPfxTeBC-ighV4Cc"; //
 
-app.get('/send-game', async (req, res) => {
-  const chatId = req.query.chatId;
+// ✅ PASTE WEBHOOK HERE
+app.post('/webhook', async (req, res) => {
+  console.log("Webhook hit:", req.body);
 
-  if (!chatId) {
-    return res.send("Missing chatId");
-  }
+  const message = req.body.message;
 
-  try {
-    const response = await axios.post(
+  if (message && message.text === "/start") {
+    const chatId = message.chat.id;
+
+    await axios.post(
       `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
       {
         chat_id: chatId,
@@ -25,7 +26,7 @@ app.get('/send-game', async (req, res) => {
               {
                 text: "🚀 Play Game",
                 web_app: {
-                  url: "https://your-game.vercel.app"
+                  url: "https://tap-game.vercel.app" // 🔴 replace with YOUR URL
                 }
               }
             ]
@@ -33,14 +34,12 @@ app.get('/send-game', async (req, res) => {
         }
       }
     );
-
-    res.json(response.data);
-  } catch (err) {
-    console.error(err.response?.data || err.message);
-    res.status(500).send("Error sending message");
   }
+
+  res.sendStatus(200);
 });
 
+// existing routes
 app.get('/', (req, res) => {
   res.send("Server is running");
 });
