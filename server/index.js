@@ -15,6 +15,18 @@ app.post('/webhook', async (req, res) => {
   if (message && message.text === "/start") {
     const chatId = message.chat.id;
 
+    // 🔥 REFERRAL LOGIC START
+let referrerId = null;
+
+const parts = message.text.split(" ");
+
+if (parts.length > 1 && parts[1].startsWith("ref_")) {
+  referrerId = parts[1].replace("ref_", "");
+}
+
+console.log("Referrer ID:", referrerId);
+// 🔥 REFERRAL LOGIC END
+
     await axios.post(
       `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
       {
