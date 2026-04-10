@@ -26,7 +26,7 @@ app.post('/webhook', async (req, res) => {
               {
                 text: "🚀 Play Game",
                 web_app: {
-                  url: "https://tap-game.vercel.app" // 🔴 replace with YOUR URL
+                  url: "https://tap-game-gray.vercel.app" //
                 }
               }
             ]
