@@ -1,6 +1,11 @@
 const express = require('express');
 const axios = require('axios');
+const mongoose = require('mongoose');
 const app = express();
+
+mongoose.connect("mongodb+srv://grizzlytycoon:Grizzly@6869@grizzlytycoon.yewbdnt.mongodb.net/tapgame?retryWrites=true&w=majority&appName=GrizzlyTycoon")
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.log(err));
 
 const mongoose = require('mongoose');
 
