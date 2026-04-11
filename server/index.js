@@ -110,27 +110,6 @@ if (parts.length > 1 && parts[1].startsWith("ref_")) {
 console.log("Referrer ID:", referrerId);
 // 🔥 REFERRAL LOGIC END
 
-    await axios.post(
-      `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
-      {
-        chat_id: chatId,
-        text: "Play now 🎮",
-        reply_markup: {
-          inline_keyboard: [
-            [
-              {
-                text: "🚀 Play Game",
-                web_app: {
-                  url: "https://tap-game-gray.vercel.app" //
-                }
-              }
-            ]
-          ]
-        }
-      }
-    );
-  }
-
   res.sendStatus(200);
 });
 
