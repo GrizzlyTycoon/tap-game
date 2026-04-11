@@ -24,6 +24,27 @@ app.post('/webhook', async (req, res) => {
   if (message.text && message.text.startsWith("/start")) {
     const chatId = message.chat.id;
 
+    let user = await User.findOne({ userId: chatId });
+
+if (!user) {
+  user = new User({
+    userId: chatId,
+    referredBy: referrerId
+  });
+
+  if (referrerId) {
+    const refUser = await User.findOne({ userId: referrerId });
+
+    if (refUser) {
+      refUser.coins += 500;
+      refUser.referrals += 1;
+      await refUser.save();
+    }
+  }
+
+  await user.save();
+}
+    
     // ✅ SAFE REFERRAL LOGIC
     let referrerId = null;
 
