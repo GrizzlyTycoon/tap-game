@@ -71,7 +71,7 @@ if (!user) {
                 {
                   text: "🚀 Play Game",
                   web_app: {
-                    url: "https://tap-game-gray.vercel.app/" // 
+                    url: "https://tap-game-gray.vercel.app/"
                   }
                 }
               ]
