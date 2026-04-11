@@ -45,7 +45,6 @@ if (!user) {
   await user.save();
 }
     
-    // ✅ SAFE REFERRAL LOGIC
     let referrerId = null;
 
     try {
