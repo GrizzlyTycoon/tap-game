@@ -70,7 +70,7 @@ app.post('/webhook', async (req, res) => {
   res.sendStatus(200);
 });
 
-const BOT_TOKEN = "8279491526:AAGLQO6MkX1eWzIV709uPfxTeBC-ighV4Cc"; //
+const BOT_TOKEN = "8279491526:AAFPWzJ9ilRC0hH2-DXtKCXRGqU46UvlxwM"; //
 
 // ✅ PASTE WEBHOOK HERE
 app.post('/webhook', async (req, res) => {
