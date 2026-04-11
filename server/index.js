@@ -61,7 +61,7 @@ if (!user) {
 
     try {
       await axios.post(
-        `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+        `https://api.telegram.org/bot${8279491526:AAFPWzJ9ilRC0hH2-DXtKCXRGqU46UvlxwM}/sendMessage`,
         {
           chat_id: chatId,
           text: "Play now 🎮",
@@ -71,7 +71,7 @@ if (!user) {
                 {
                   text: "🚀 Play Game",
                   web_app: {
-                    url: "https://tap-game.vercel.app" // 
+                    url: "https://tap-game-gray.vercel.app/" // 
                   }
                 }
               ]
