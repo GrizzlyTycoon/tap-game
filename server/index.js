@@ -87,7 +87,7 @@ if (!user) {
   res.sendStatus(200);
 });
 
-const BOT_TOKEN = "8279491526:AAFPWzJ9ilRC0hH2-DXtKCXRGqU46UvlxwM"; //
+const BOT_TOKEN = "8279491526:AAFPWzJ9ilRC0hH2-DXtKCXRGqU46UvlxwM";
 
 // ✅ PASTE WEBHOOK HERE
 app.post('/webhook', async (req, res) => {
