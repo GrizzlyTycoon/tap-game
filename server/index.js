@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const mongoose = require('mongoose');
+const User = require('./models/User');
 const app = express();
 
 console.log("Trying MongoDB...");
