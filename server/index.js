@@ -7,12 +7,6 @@ mongoose.connect("mongodb+srv://grizzlytycoon:Grizzly6869@grizzlytycoon.yewbdnt.
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
-const mongoose = require('mongoose');
-
-mongoose.connect("YOUR_MONGO_URL")
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.log(err));
-
 app.use(express.json());
 
 app.post('/webhook', async (req, res) => {
