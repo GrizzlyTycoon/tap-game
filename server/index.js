@@ -110,9 +110,6 @@ if (parts.length > 1 && parts[1].startsWith("ref_")) {
 console.log("Referrer ID:", referrerId);
 // 🔥 REFERRAL LOGIC END
 
-  res.sendStatus(200);
-});
-
 // existing routes
 app.get('/', (req, res) => {
   res.send("Server is running");
