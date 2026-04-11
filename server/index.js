@@ -95,9 +95,6 @@ app.post('/webhook', async (req, res) => {
 
   const message = req.body.message;
 
-  if (message && message.text === "/start") {
-    const chatId = message.chat.id;
-
     // 🔥 REFERRAL LOGIC START
 let referrerId = null;
 
