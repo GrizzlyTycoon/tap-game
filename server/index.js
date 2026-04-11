@@ -22,7 +22,19 @@ app.post('/webhook', async (req, res) => {
   }
 
   if (message.text && message.text.startsWith("/start")) {
-    const chatId = message.chat.id;
+     const chatId = message.chat.id;
+
+    let referrerId = null;
+
+    try {
+      const parts = message.text.split(" ");
+
+      if (parts.length > 1 && parts[1].startsWith("ref_")) {
+        referrerId = parts[1].replace("ref_", "");
+      }
+    } catch (e) {
+      console.log("Referral parsing error:", e);
+    }
 
 let user = await User.findOne({ userId: chatId });
 
@@ -44,18 +56,6 @@ if (!user) {
 
   await user.save();
 }
-    
-    let referrerId = null;
-
-    try {
-      const parts = message.text.split(" ");
-
-      if (parts.length > 1 && parts[1].startsWith("ref_")) {
-        referrerId = parts[1].replace("ref_", "");
-      }
-    } catch (e) {
-      console.log("Referral parsing error:", e);
-    }
 
     console.log("Referrer ID:", referrerId);
 
