@@ -24,7 +24,7 @@ app.post('/webhook', async (req, res) => {
   if (message.text && message.text.startsWith("/start")) {
     const chatId = message.chat.id;
 
-    let user = await User.findOne({ userId: chatId });
+let user = await User.findOne({ userId: chatId });
 
 if (!user) {
   user = new User({
