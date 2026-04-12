@@ -1,9 +1,12 @@
+const cors = require('cors');
 const express = require('express');
 const axios = require('axios');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 
 const app = express();
+
+app.use(cors());
 
 const BOT_TOKEN = "8279491526:AAFPWzJ9ilRC0hH2-DXtKCXRGqU46UvlxwM";
 
@@ -91,6 +94,10 @@ app.post('/webhook', async (req, res) => {
 
 app.get('/', (req, res) => {
   res.send("Server is running");
+});
+
+      app.post('/tap', (req, res) => {
+    res.json({ message: 'tap received' });
 });
 
 app.listen(3000, () => {
