@@ -10,8 +10,9 @@ async function tap() {
   coins++;
   document.getElementById('coins').innerText = coins;
 }
-const user = Telegram.WebApp.initDataUnsafe.user;
-
-if (user) {
-  console.log("User ID:", user.id);
+if (window.Telegram && Telegram.WebApp) {
+    const user = Telegram.WebApp.initDataUnsafe.user;
+    if (user) {
+        console.log("User ID:", user.id);
+    }
 }
