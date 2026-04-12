@@ -1,3 +1,5 @@
+console.log("APP LOADED");
+
 let coins = 0;
 
 async function tap() {
