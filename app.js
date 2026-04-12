@@ -2,7 +2,7 @@ let coins = 0;
 
 async function tap() {
     try {
-        await fetch('https://tap-game-5271.onrender.com', {
+        await fetch('https://tap-game-5271.onrender.com/tap', {
             method: 'POST'
         });
     } catch (e) {
