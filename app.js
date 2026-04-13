@@ -1,21 +1,27 @@
 let coins = 0;
 
 async function tap() {
-    try {
-        await fetch('https://tap-game-5271.onrender.com/tap', {
-            method: 'POST'
-        });
-    } catch (e) {
-        console.log("API failed, ignoring...");
-    }
+  try {
+    console.log("tap clicked");
+
+    await fetch('https://tap-game-5271.onrender.com/tap', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
     coins++;
-    document.getElementById('coins').innerText = coins;
-}
 
-if (window.Telegram && Telegram.WebApp) {
-    const user = Telegram.WebApp.initDataUnsafe.user;
-    if (user) {
-        console.log("User ID:", user.id);
+    const el = document.getElementById('coins');
+
+    if (el) {
+      el.innerText = coins;
+    } else {
+      console.log("coins element NOT found ❌");
     }
+
+  } catch (e) {
+    console.log("ERROR:", e);
+  }
 }
