@@ -1,6 +1,8 @@
 let coins = 0;
 
-async function tap() {
+console.log("APP JS LOADED ✅");
+
+window.tap = async function () {
   try {
     console.log("tap clicked");
 
@@ -24,4 +26,4 @@ async function tap() {
   } catch (e) {
     console.log("ERROR:", e);
   }
-}
+};
