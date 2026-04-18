@@ -1,5 +1,12 @@
 let coins = 0;
 
+const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+const userId = tgUser ? tgUser.id : "test_user";
+
+console.log("USER ID:", userId);
+
+let coins = 0;
+
 console.log("APP JS LOADED ✅");
 
 window.tap = async function () {
