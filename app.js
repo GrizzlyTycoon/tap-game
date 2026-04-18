@@ -4,8 +4,6 @@ console.log("APP JS LOADED ✅");
 
 window.tap = async function () {
   try {
-    console.log("tap clicked");
-
     coins++;
 
     const el = document.getElementById('coins');
@@ -13,12 +11,20 @@ window.tap = async function () {
       el.innerText = coins;
     }
 
-    fetch('https://tap-game-5271.onrender.com/tap', {
+    const res = await fetch('https://tap-game-5271.onrender.com/tap', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        userId: Telegram.WebApp.initDataUnsafe.user.id
+      })
     });
+
+    const data = await res.json();
+
+    coins = data.coins;
+    el.innerText = coins;
 
   } catch (e) {
     console.log("ERROR:", e);
