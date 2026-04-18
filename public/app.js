@@ -1,86 +1,53 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-require('dotenv').config();
+let coins = 0;
 
-const app = express();
+const tg = window.Telegram?.WebApp;
+let userId = "test_user";
 
-app.use(cors({
-  origin: ["https://tap-game-gray.vercel.app"],
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
-  credentials: true
-}));
+if (tg) {
+  tg.ready();
+  const user = tg.initDataUnsafe.user;
+  if (user) userId = user.id;
+}
 
-app.options('*', cors()); // preflight
+console.log("USER ID:", userId);
 
-app.use(express.json());
-
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log("Mongo Error:", err));
-
-const userSchema = new mongoose.Schema({
-  userId: String,
-  coins: { type: Number, default: 0 }
-});
-
-const User = mongoose.model('User', userSchema);
-
-app.get('/', (req, res) => {
-  res.send("Server running");
-});
-
-app.post('/user', async (req, res) => {
+window.onload = async function () {
   try {
-    const { userId } = req.body;
+    const res = await fetch('https://tap-game-5271.onrender.com/user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId })
+    });
 
-    if (!userId) {
-      return res.status(400).json({ error: "Missing userId" });
-    }
+    const data = await res.json();
+    coins = data.coins || 0;
 
-    let user = await User.findOne({ userId });
+    document.getElementById('coins').innerText = coins;
 
-    if (!user) {
-      user = new User({ userId, coins: 0 });
-      await user.save();
-    }
-
-    res.json({ coins: user.coins });
-
-  } catch (err) {
-    console.log("USER ERROR:", err);
-    res.status(500).json({ error: "Server error" });
+  } catch (e) {
+    console.log("LOAD ERROR:", e);
   }
-});
+};
 
-app.post('/tap', async (req, res) => {
+window.tap = async function () {
+  coins++;
+  document.getElementById('coins').innerText = coins;
+
   try {
-    const { userId } = req.body;
+    const res = await fetch('https://tap-game-5271.onrender.com/tap', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId })
+    });
 
-    if (!userId) {
-      return res.status(400).json({ error: "Missing userId" });
+    const data = await res.json();
+
+    if (data.coins !== undefined) {
+      coins = data.coins;
+      document.getElementById('coins').innerText = coins;
     }
 
-    let user = await User.findOne({ userId });
-
-    if (!user) {
-      user = new User({ userId, coins: 0 });
-    }
-
-    user.coins += 1;
-    await user.save();
-
-    res.json({ coins: user.coins });
-
-  } catch (err) {
-    console.log("TAP ERROR:", err);
-    res.status(500).json({ error: "Server error" });
+  } catch (e) {
+    console.log("FETCH ERROR:", e);
   }
-});
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-}); 
+};
