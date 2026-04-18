@@ -131,3 +131,16 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server started on port", PORT);
 });
+
+app.post('/user', async (req, res) => {
+  const { userId } = req.body;
+
+  let user = await User.findOne({ userId });
+
+  if (!user) {
+    user = new User({ userId, coins: 0 });
+    await user.save();
+  }
+
+  res.json({ coins: user.coins });
+});
