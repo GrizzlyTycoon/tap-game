@@ -9,11 +9,11 @@ const User = require('./models/User');
 const app = express();
 
 app.use(cors({
-  origin: ["https://tap-game-gray.vercel.app"],
+  origin: "https://tap-game-gray.vercel.app",
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"],
-  credentials: true
 }));
+
 
 app.options('*', cors());
 
