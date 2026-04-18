@@ -12,14 +12,14 @@ window.tap = async function () {
     }
 
     const res = await fetch('https://tap-game-5271.onrender.com/tap', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        userId: Telegram.WebApp.initDataUnsafe.user.id
-      })
-    });
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    userId: Telegram.WebApp.initDataUnsafe.user.id
+  })
+});
 
     const data = await res.json();
 
