@@ -83,25 +83,4 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-});  if (el) el.innerText = coins;
-
-  try {
-    const res = await fetch('https://tap-game-5271.onrender.com/tap', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId })
-    });
-
-    const data = await res.json();
-
-    console.log("Server response:", data);
-
-    if (data.coins !== undefined) {
-      coins = data.coins;
-      if (el) el.innerText = coins;
-    }
-
-  } catch (e) {
-    console.log("FETCH ERROR:", e);
-  }
-};
+}); 
