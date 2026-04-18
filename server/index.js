@@ -8,7 +8,15 @@ const User = require('./models/User');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: ["https://tap-game-gray.vercel.app"],
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+  credentials: true
+}));
+
+app.options('*', cors());
+
 app.use(express.json());
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -20,8 +28,6 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
 
 app.post('/webhook', async (req, res) => {
-  console.log("Webhook hit:", req.body);
-
   const message = req.body.message;
   if (!message) return res.sendStatus(200);
 
@@ -30,16 +36,10 @@ app.post('/webhook', async (req, res) => {
 
     let referrerId = null;
 
-    try {
-      const parts = message.text.split(" ");
-      if (parts.length > 1 && parts[1].startsWith("ref_")) {
-        referrerId = parts[1].replace("ref_", "");
-      }
-    } catch (e) {
-      console.log(e);
+    const parts = message.text.split(" ");
+    if (parts.length > 1 && parts[1].startsWith("ref_")) {
+      referrerId = parts[1].replace("ref_", "");
     }
-
-    console.log("Referrer:", referrerId);
 
     let user = await User.findOne({ userId: chatId });
 
@@ -51,6 +51,7 @@ app.post('/webhook', async (req, res) => {
         referredBy: referrerId || null
       });
 
+      // referral reward
       if (referrerId) {
         const refUser = await User.findOne({ userId: referrerId });
 
@@ -64,42 +65,52 @@ app.post('/webhook', async (req, res) => {
       await user.save();
     }
 
-    try {
-      await axios.post(
-        `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
-        {
-          chat_id: chatId,
-          text: "Play now 🎮",
-          reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text: "🚀 Play Game",
-                  web_app: {
-                    url: "https://tap-game-gray.vercel.app/"
-                  }
+    await axios.post(
+      `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+      {
+        chat_id: chatId,
+        text: "Play now 🎮",
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: "🚀 Play Game",
+                web_app: {
+                  url: "https://tap-game-gray.vercel.app/"
                 }
-              ]
+              }
             ]
-          }
+          ]
         }
-      );
-    } catch (err) {
-      console.error("Telegram error:", err.response?.data || err.message);
-    }
+      }
+    );
   }
 
   res.sendStatus(200);
 });
 
-// ✅ TAP API (SAVE COINS)
-app.post('/tap', async (req, res) => {
+app.post('/user', async (req, res) => {
   try {
     const { userId } = req.body;
 
-    if (!userId) {
-      return res.status(400).json({ error: "No userId" });
+    let user = await User.findOne({ userId });
+
+    if (!user) {
+      user = new User({ userId, coins: 0 });
+      await user.save();
     }
+
+    res.json({ coins: user.coins });
+
+  } catch (err) {
+    console.log("USER ERROR:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.post('/tap', async (req, res) => {
+  try {
+    const { userId } = req.body;
 
     let user = await User.findOne({ userId });
 
@@ -117,7 +128,7 @@ app.post('/tap', async (req, res) => {
     res.json({ coins: user.coins });
 
   } catch (err) {
-    console.log(err);
+    console.log("TAP ERROR:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
@@ -130,17 +141,4 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log("Server started on port", PORT);
-});
-
-app.post('/user', async (req, res) => {
-  const { userId } = req.body;
-
-  let user = await User.findOne({ userId });
-
-  if (!user) {
-    user = new User({ userId, coins: 0 });
-    await user.save();
-  }
-
-  res.json({ coins: user.coins });
 });
